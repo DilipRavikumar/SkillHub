@@ -1,0 +1,83 @@
+// SkillHub Database Schema for dbdiagram.io
+// Copy and paste this into https://dbdiagram.io/d
+
+Table users {
+  id bigint [primary key, increment]
+  name varchar(255) [not null]
+  email varchar(255) [not null, unique]
+  password varchar(255) [not null]
+  role_id bigint [not null, ref: > roles.id]
+  Note: 'User accounts with authentication and role assignment'
+}
+
+Table roles {
+  id bigint [primary key, increment]
+  role_name varchar(255) [not null, unique]
+  Note: 'User roles: ADMIN, INSTRUCTOR, STUDENT'
+}
+
+Table courses {
+  id bigint [primary key, increment]
+  title varchar(255) [not null]
+  description text
+  thumbnail text
+  instructor_id bigint [not null, ref: > users.id]
+  Note: 'Courses created by instructors'
+}
+
+Table lessons {
+  id bigint [primary key, increment]
+  course_id bigint [not null, ref: > courses.id]
+  title varchar(255) [not null]
+  description text
+  video_url varchar(500)
+  video_filename varchar(255)
+  video_duration integer [default: 0]
+  lesson_order integer [default: 0]
+  created_at timestamp
+  Note: 'Lessons within courses, containing video content'
+}
+
+Table enrollments {
+  id bigint [primary key, increment]
+  course_id bigint [not null, ref: > courses.id]
+  student_id bigint [not null, ref: > users.id]
+  enrolled_at timestamp
+  progress integer [default: 0]
+  Note: 'Student enrollments in courses'
+}
+
+Table video_progress {
+  id bigint [primary key, increment]
+  student_id bigint [not null, ref: > users.id]
+  lesson_id bigint [not null, ref: > lessons.id]
+  watched_duration integer [default: 0]
+  total_duration integer [default: 0]
+  completion_percentage decimal(5,2) [default: 0.00]
+  last_watched_at timestamp
+  is_completed boolean [default: false]
+  Note: 'Tracks student progress for each lesson video'
+}
+
+Table certificates {
+  id bigint [primary key, increment]
+  student_id bigint [not null, ref: > users.id]
+  course_id bigint [not null, ref: > courses.id]
+  certificate_number varchar(255) [unique, not null]
+  certificate_url text
+  issued_date timestamp [not null]
+  completion_percentage decimal(5,2)
+  Note: 'Certificates issued to students upon course completion'
+}
+
+// Relationships summary:
+// - users.role_id -> roles (Many-to-One)
+// - courses.instructor_id -> users (Many-to-One, user as instructor)
+// - lessons.course_id -> courses (Many-to-One)
+// - enrollments.course_id -> courses (Many-to-One)
+// - enrollments.student_id -> users (Many-to-One, user as student)
+// - video_progress.student_id -> users (Many-to-One, user as student)
+// - video_progress.lesson_id -> lessons (Many-to-One)
+// - certificates.student_id -> users (Many-to-One, user as student)
+// - certificates.course_id -> courses (Many-to-One)
+

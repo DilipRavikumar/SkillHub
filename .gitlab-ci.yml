@@ -1,0 +1,145 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_TLS_CERTDIR: "/certs"
+
+test-backend:
+  stage: test
+  image: maven:3.8-openjdk-17
+  script:
+    - cd backend
+    - mvn clean test
+  artifacts:
+    reports:
+      junit: backend/target/surefire-reports/TEST-*.xml
+    paths:
+      - backend/target/surefire-reports/
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+
+test-frontend:
+  stage: test
+  image: node:18-alpine
+  script:
+    - cd frontend
+    - npm install --legacy-peer-deps --maxsockets 1 --no-audit
+    - npm run build
+  artifacts:
+    paths:
+      - frontend/dist/
+    expire_in: 1 week
+  only:
+    - main
+    - develop
+
+build-backend:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD docker.io
+    - cd backend
+    - docker build --no-cache -t dilipravikumar619/skillhub-backend:$CI_COMMIT_SHA -t dilipravikumar619/skillhub-backend:latest .
+    - docker push dilipravikumar619/skillhub-backend:$CI_COMMIT_SHA
+    - docker push dilipravikumar619/skillhub-backend:latest
+  only:
+    - main
+    - develop
+
+build-frontend:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD docker.io
+    - cd frontend
+    - docker build --no-cache -t dilipravikumar619/skillhub-frontend:$CI_COMMIT_SHA -t dilipravikumar619/skillhub-frontend:latest .
+    - docker push dilipravikumar619/skillhub-frontend:$CI_COMMIT_SHA
+    - docker push dilipravikumar619/skillhub-frontend:latest
+  only:
+    - main
+    - develop
+
+deploy:
+  stage: deploy
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache openssh-client
+    - mkdir -p ~/.ssh && chmod 700 ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - eval $(ssh-agent -s)
+    - ssh-add ~/.ssh/id_rsa
+    - ssh-keyscan -H "$PRODUCTION_SERVER" >> ~/.ssh/known_hosts 2>/dev/null || true
+  script:
+    - SERVER=$(echo "$PRODUCTION_SERVER" | tr -d '\r\n' | xargs)
+    - USER=$(echo "$PRODUCTION_USER" | tr -d '\r\n' | xargs)
+    - echo "Deploying to $USER@$SERVER"
+    - |
+      ssh ${USER}@${SERVER} << 'PREPARE'
+        mkdir -p ~/skillhub-app/prometheus
+        mkdir -p ~/skillhub-app/grafana/provisioning/datasources
+        mkdir -p ~/skillhub-app/grafana/provisioning/dashboards
+        chmod -R 755 ~/skillhub-app
+      PREPARE
+    - scp docker-compose.yml ${USER}@${SERVER}:~/skillhub-app/docker-compose.yml
+    - scp prometheus/prometheus.yml ${USER}@${SERVER}:~/skillhub-app/prometheus/prometheus.yml
+    - scp grafana/provisioning/datasources/prometheus.yml ${USER}@${SERVER}:~/skillhub-app/grafana/provisioning/datasources/prometheus.yml
+    - scp grafana/provisioning/dashboards/dashboard.yml ${USER}@${SERVER}:~/skillhub-app/grafana/provisioning/dashboards/dashboard.yml
+    - scp grafana/provisioning/dashboards/skillhub-dashboard.json ${USER}@${SERVER}:~/skillhub-app/grafana/provisioning/dashboards/skillhub-dashboard.json
+    - |
+      ssh ${USER}@${SERVER} << 'DEPLOY'
+        cd ~/skillhub-app
+        echo "AWS_ACCESS_KEY=$AWS_ACCESS_KEY" > .env
+        echo "AWS_SECRET_KEY=$AWS_SECRET_KEY" >> .env
+        echo "AWS_REGION=us-east-2" >> .env
+        echo "AWS_S3_BUCKET_THUMBNAILS=skillhub-thumbnails-dilip" >> .env
+        echo "AWS_S3_BUCKET_VIDEOS=skillhub-videos-dilip" >> .env
+        echo "JWT_SECRET=$JWT_SECRET" >> .env
+        echo "MAIL_HOST=${MAIL_HOST:-smtp.gmail.com}" >> .env
+        echo "MAIL_PORT=${MAIL_PORT:-587}" >> .env
+        echo "MAIL_USERNAME=$MAIL_USERNAME" >> .env
+        echo "MAIL_PASSWORD=$MAIL_PASSWORD" >> .env
+        echo "MAIL_FROM=$MAIL_FROM" >> .env
+        echo "MAIL_ENABLED=${MAIL_ENABLED:-true}" >> .env
+        echo "APP_BASE_URL=${APP_BASE_URL:-http://3.150.25.51}" >> .env
+        echo "$DOCKER_HUB_PASSWORD" | sudo docker login -u "$DOCKER_HUB_USERNAME" --password-stdin
+        sudo docker pull dilipravikumar619/skillhub-backend:latest
+        sudo docker pull dilipravikumar619/skillhub-frontend:latest
+        sudo docker-compose down || true
+        sudo docker-compose up -d
+        echo "Waiting for services to start..."
+        sleep 15
+        echo "=== Container Status ===" 
+        sudo docker-compose ps
+        echo "=== Backend Container Logs ===" 
+        sudo docker logs skillhub-backend --tail 50 || true
+        echo "=== Database Container Status ===" 
+        sudo docker logs skillhub-db --tail 20 || true
+        echo "=== Testing Backend Health ===" 
+        curl -f http://localhost:8080/api/stats || echo "Backend health check failed"
+        echo "=== Testing Frontend ===" 
+        curl -f http://localhost/ || echo "Frontend check failed"
+        echo "=== Prometheus Container Status ===" 
+        sudo docker logs skillhub-prometheus --tail 20 || echo "Prometheus container not found"
+        echo "=== Grafana Container Status ===" 
+        sudo docker logs skillhub-grafana --tail 20 || echo "Grafana container not found"
+        echo "=== Testing Prometheus ===" 
+        curl -f http://localhost:9091 || echo "Prometheus health check failed"
+        echo "=== Testing Grafana ===" 
+        curl -f http://localhost:3001 || echo "Grafana health check failed"
+        echo "=== All Containers ===" 
+        sudo docker ps -a
+      DEPLOY
+  environment:
+    name: production
+    url: http://$PRODUCTION_SERVER
+  only:
+    - main

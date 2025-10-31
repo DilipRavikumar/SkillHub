@@ -1,0 +1,276 @@
+.certificate-container {
+  min-height: 100vh;
+  padding: 40px 20px;
+  background: linear-gradient(to bottom, #f5f4ff, #faf9fe);
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.spinner {
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #6366f1;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error {
+  color: #dc3545;
+}
+
+.certificate-preview {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.certificate-card {
+  background: white;
+  border-radius: 16px;
+  padding: 50px 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+  max-height: fit-content;
+}
+
+.certificate-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(to right, #6366f1, #8b5cf6, #ec4899);
+}
+
+.certificate-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logo {
+  font-size: 56px;
+  margin-bottom: 12px;
+}
+
+.certificate-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+.decoration {
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #6366f1, transparent);
+  margin: 0 auto;
+}
+
+.certificate-body {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.certificate-text {
+  font-size: 15px;
+  color: #666;
+  margin: 10px 0;
+}
+
+.student-name {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 12px 0;
+  background: linear-gradient(to right, #6366f1, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.course-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: #333;
+  margin: 12px 0;
+}
+
+.completion {
+  font-size: 24px;
+  font-weight: 700;
+  color: #10b981;
+  margin: 12px 0;
+}
+
+.certificate-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 2px solid #e5e7eb;
+}
+
+.issue-date,
+.certificate-number {
+  text-align: center;
+}
+
+.issue-date p,
+.certificate-number p {
+  font-size: 14px;
+  color: #666;
+  margin: 8px 0;
+}
+
+.certificate-number p {
+  font-family: 'Courier New', monospace;
+  color: #6366f1;
+  font-weight: 600;
+}
+
+.certificate-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.btn {
+  padding: 12px 32px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+}
+
+.btn-secondary {
+  background: white;
+  color: #6366f1;
+  border: 2px solid #6366f1;
+}
+
+.btn-secondary:hover {
+  background: #6366f1;
+  color: white;
+}
+
+/* Print styles */
+@media print {
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+  }
+
+  .certificate-container {
+    background: white;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .certificate-actions {
+    display: none;
+  }
+
+  .certificate-card {
+    box-shadow: none;
+    padding: 40px;
+    margin: 0;
+    width: 100%;
+    max-width: 210mm; /* A4 width */
+    height: auto;
+  }
+
+  .certificate-header {
+    margin-bottom: 20px;
+  }
+
+  .certificate-header h1 {
+    font-size: 32px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+  }
+
+  .certificate-body {
+    margin-bottom: 30px;
+  }
+
+  .student-name {
+    font-size: 32px;
+    margin: 15px 0;
+  }
+
+  .course-name {
+    font-size: 20px;
+    margin: 15px 0;
+  }
+
+  .certificate-text {
+    font-size: 14px;
+    margin: 10px 0;
+  }
+
+  .completion {
+    font-size: 24px;
+  }
+
+  .certificate-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+  }
+
+  @page {
+    size: A4 landscape;
+    margin: 0;
+  }
+
+  /* Ensure everything fits on one page */
+  .certificate-card::before {
+    content: '';
+    display: block;
+    page-break-inside: avoid;
+  }
+
+  .certificate-body,
+  .certificate-footer {
+    page-break-inside: avoid;
+  }
+}
+

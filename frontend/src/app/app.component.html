@@ -1,0 +1,13 @@
+<div class="app-container">
+  <app-navbar></app-navbar>
+  
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+  
+  <!-- Global Loading Spinner -->
+  <div class="global-loading" *ngIf="isLoading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p class="loading-text">Loading...</p>
+  </div>
+</div>

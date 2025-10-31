@@ -1,0 +1,147 @@
+<div class="lesson-detail-container">
+  <!-- Breadcrumb Navigation -->
+  <nav class="breadcrumb">
+    <a routerLink="/courses">Courses</a>
+    <span class="separator">></span>
+    <a (click)="navigateToCourse()" class="course-link">{{ course?.title }}</a>
+    <span class="separator">></span>
+    <span class="current">{{ lesson?.title }}</span>
+  </nav>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="loading-spinner"></div>
+    <p>Loading lesson...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error-container">
+    <h3>Error</h3>
+    <p>{{ error }}</p>
+    <button class="btn btn-primary" (click)="ngOnInit()">Retry</button>
+  </div>
+
+  <!-- Lesson Content -->
+  <div *ngIf="lesson && !isLoading && !error" class="lesson-content">
+    <!-- Lesson Header -->
+    <div class="lesson-header">
+      <h1>{{ lesson.title }}</h1>
+      <div class="lesson-meta">
+        <span class="lesson-number">Lesson {{ lesson.lessonOrder }}</span>
+      </div>
+    </div>
+
+    <!-- Video Player -->
+    <div class="video-section">
+      <app-video-player
+        *ngIf="lesson.videoFilename || lesson.videoUrl"
+        [lessonId]="lesson.id"
+        [videoFilename]="lesson.videoFilename"
+        [videoUrl]="lesson.videoUrl"
+        (progressUpdate)="onVideoProgressUpdate($event)"
+        (lessonCompleted)="refreshLessonCompletionStatus()">
+      </app-video-player>
+      
+      <!-- Fallback for external video URLs -->
+      <div *ngIf="!lesson.videoFilename && lesson.videoUrl" class="external-video">
+        <iframe 
+          [src]="lesson.videoUrl" 
+          frameborder="0" 
+          allowfullscreen
+          class="video-iframe">
+        </iframe>
+      </div>
+      
+      <!-- No video message -->
+      <div *ngIf="!lesson.videoFilename && !lesson.videoUrl" class="no-video">
+        <i class="fas fa-video-slash"></i>
+        <p>No video available for this lesson</p>
+      </div>
+    </div>
+
+    <!-- Lesson Description -->
+    <div class="lesson-description">
+      <h3>About this lesson</h3>
+      <p>{{ lesson.description }}</p>
+    </div>
+
+    <!-- Course Lessons List -->
+    <div class="course-lessons">
+      <h3>Course Lessons</h3>
+      <div class="lessons-list">
+        <div 
+          *ngFor="let courseLesson of courseLessons" 
+          class="lesson-item"
+          [class.current]="courseLesson.id === lesson.id"
+          (click)="navigateToLesson(courseLesson.id)">
+          <div class="lesson-info">
+            <h4>{{ courseLesson.title }}</h4>
+          </div>
+          <div class="lesson-status">
+            <span *ngIf="courseLesson.id === lesson.id" class="current-badge">Current</span>
+            <span *ngIf="courseLesson.lessonOrder < lesson.lessonOrder" class="completed-badge">✓</span>
+            <span *ngIf="courseLesson.lessonOrder > lesson.lessonOrder" class="locked-badge">🔒</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Video Progress -->
+    <div class="video-progress-section" *ngIf="lesson.videoFilename">
+      <div class="progress-info">
+        <span class="progress-label">Video Progress:</span>
+        <span class="progress-percentage">{{ videoProgress | number:'1.0-0' }}%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="videoProgress"></div>
+      </div>
+      <div class="completion-status" *ngIf="isLessonCompleted">
+        <div class="completion-message">
+          <i class="fas fa-check-circle"></i>
+          <span>Lesson Completed!</span>
+        </div>
+      </div>
+      
+      <!-- Manual completion button for students -->
+      <div class="manual-completion" *ngIf="authService.getCurrentUser()?.role === 'STUDENT'">
+        <button 
+          *ngIf="!isLessonCompleted"
+          class="btn btn-primary" 
+          (click)="markLessonAsComplete()">
+          <i class="fas fa-check"></i>
+          Mark as Complete
+        </button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="lesson-navigation">
+      <button 
+        *ngIf="getPreviousLesson()" 
+        class="btn btn-secondary"
+        (click)="navigateToLesson(getPreviousLesson()!.id)">
+        ← Previous: {{ getPreviousLesson()?.title }}
+      </button>
+      
+      <button 
+        *ngIf="getNextLesson()" 
+        class="btn btn-primary"
+        [class.disabled]="!nextButtonEnabled"
+        [disabled]="!nextButtonEnabled"
+        (click)="nextButtonEnabled ? navigateToLesson(getNextLesson()!.id) : null">
+        <span *ngIf="!nextButtonEnabled">Complete Lesson First</span>
+        <span *ngIf="nextButtonEnabled">Next Lesson: {{ getNextLesson()?.title }} →</span>
+      </button>
+      
+      <button 
+        *ngIf="!getNextLesson()" 
+        class="btn btn-success"
+        [class.disabled]="!nextButtonEnabled"
+        [disabled]="!nextButtonEnabled"
+        (click)="nextButtonEnabled ? navigateToCourse() : null">
+        <span *ngIf="!nextButtonEnabled">Complete Video to Finish Course</span>
+        <span *ngIf="nextButtonEnabled">Complete Course</span>
+      </button>
+    </div>
+  </div>
+</div>

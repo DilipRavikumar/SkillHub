@@ -1,0 +1,11 @@
+# Default Course Image Placeholder
+
+This file should be replaced with an actual image file named `default-course.jpg`.
+
+The image should be:
+- Format: JPG or PNG
+- Size: 300x200 pixels (3:2 aspect ratio)
+- Content: A generic course/education themed image
+- File size: Under 100KB for web optimization
+
+You can use any image editing tool to create this placeholder image.

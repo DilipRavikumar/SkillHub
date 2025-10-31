@@ -1,0 +1,56 @@
+cd ~/skillhub-app
+
+# 1. Create directory structure
+mkdir -p grafana/provisioning/datasources
+mkdir -p grafana/provisioning/dashboards
+
+# 2. Create datasource config
+cat > grafana/provisioning/datasources/prometheus.yml << 'EOF'
+apiVersion: 1
+
+datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      timeInterval: "15s"
+EOF
+
+# 3. Create dashboard provider config
+cat > grafana/provisioning/dashboards/dashboard.yml << 'EOF'
+apiVersion: 1
+
+providers:
+  - name: 'Default'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    editable: true
+    allowUiUpdates: true
+    options:
+      path: /etc/grafana/provisioning/dashboards
+      foldersFromFilesStructure: true
+EOF
+
+# 4. Verify files
+ls -la grafana/provisioning/datasources/
+ls -la grafana/provisioning/dashboards/
+
+# 5. Check current Grafana logs
+sudo docker logs skillhub-grafana --tail 30
+
+# 6. Restart Grafana
+sudo docker-compose up -d grafana
+
+# 7. Wait a moment
+sleep 5
+
+# 8. Check logs again
+sudo docker logs skillhub-grafana --tail 30
+
+# 9. Test Grafana
+curl http://localhost:3001/api/health

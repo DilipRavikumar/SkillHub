@@ -1,0 +1,54 @@
+<div class="course-card" [class.list-view]="viewMode === 'list'">
+  <div class="card" (click)="viewCourse()">
+    <div class="course-thumbnail">
+      <div class="thumbnail-overlay">
+        <div class="play-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="9 19 20 12 9 5 9 19"></polygon>
+          </svg>
+        </div>
+      </div>
+      <img [src]="course.thumbnail || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNjY3ZWVhIi8+Cjx0ZXh0IHg9IjE1MCIgeT0iMTAwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Db3Vyc2UgSW1hZ2U8L3RleHQ+Cjwvc3ZnPgo='" [alt]="course.title">
+      <div class="course-badge">FREE</div>
+    </div>
+    
+    <div class="course-content">
+      <div class="course-header">
+        <h3 class="course-title">{{ course.title }}</h3>
+        <div class="course-category">{{ course.category || 'Programming' }}</div>
+      </div>
+      
+      <p class="course-description">{{ course.description }}</p>
+      
+      <div class="course-meta">
+        <div class="meta-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span>{{ course.instructor?.name || 'Expert Instructor' }}</span>
+        </div>
+        
+        <div class="meta-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="5" width="18" height="14" rx="2" ry="2"></rect>
+            <line x1="3" y1="9" x2="21" y2="9"></line>
+          </svg>
+          <span>{{ getLessonCount() }} Lessons</span>
+        </div>
+      </div>
+      
+      <div class="course-footer">
+        <button class="btn-view-course">
+          <span>Explore Course</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="video-upload-container">
+  <h4>Upload Video</h4>
+  
+  <div class="upload-section">
+    <div class="file-input-container">
+      <input 
+        type="file" 
+        id="videoFile"
+        accept="video/mp4" 
+        (change)="onFileSelected($event)"
+        class="file-input">
+      <label for="videoFile" class="file-input-label">
+        <i class="fas fa-cloud-upload-alt"></i>
+        Choose MP4 Video File
+      </label>
+    </div>
+
+    <div *ngIf="selectedFile" class="file-info">
+      <div class="file-details">
+        <i class="fas fa-video"></i>
+        <span class="file-name">{{ selectedFile.name }}</span>
+        <span class="file-size">({{ formatFileSize(selectedFile.size) }})</span>
+      </div>
+      <button type="button" (click)="removeFile()" class="btn btn-sm btn-outline-danger">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div *ngIf="isUploading" class="upload-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+      </div>
+      <span class="progress-text">Uploading... {{ uploadProgress }}%</span>
+    </div>
+
+    <div *ngIf="uploadError" class="alert alert-danger">
+      {{ uploadError }}
+    </div>
+
+    <button 
+      type="button" 
+      (click)="uploadVideo()" 
+      [disabled]="!selectedFile || isUploading"
+      class="btn btn-primary upload-btn">
+      <i class="fas fa-upload"></i>
+      {{ isUploading ? 'Uploading...' : 'Upload Video' }}
+    </button>
+  </div>
+</div>
