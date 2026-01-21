@@ -17,7 +17,7 @@ pipeline {
                     apt-get update && apt-get install -y curl unzip python3 python3-pip git
                     # Install Terraform
                     curl -fsSL https://releases.hashicorp.com/terraform/1.5.7/terraform_1.5.7_linux_amd64.zip -o terraform.zip
-                    unzip terraform.zip 
+                    unzip -o terraform.zip 
                     mv terraform /usr/local/bin/
                     
                     # Install Ansible and dependencies
