@@ -1,0 +1,94 @@
+# Uploads folder
+uploads/
+backend/uploads/
+frontend/uploads/
+
+# Node modules
+node_modules/
+
+# Angular build output
+frontend/dist/
+frontend/.angular/
+
+# Java build output
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Configuration files with sensitive data
+backend/src/main/resources/application.properties
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Maven
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+
+# Package manager files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Test coverage
+coverage/
+*.lcov
+
+# Compiled files
+*.class
+*.jar
+*.war
+*.ear
+
+# Spring Boot
+backend/HELP.md
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# Documentation files
+*.md
+README.md
+
+# SSH Keys (NEVER COMMIT)
+gitlab-deploy-key
+gitlab-deploy-key.pub
+*.pem
+*.key
+id_rsa*
+*_rsa
+*_dsa
+*_ecdsa
+
+# Deployment scripts
+=

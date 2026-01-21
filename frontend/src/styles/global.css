@@ -1,0 +1,609 @@
+/* Tailwind CSS Directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Simple Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background: linear-gradient(to bottom, #f5f4ff, #faf9fe, #fef5fb);
+  min-height: 100vh;
+}
+
+/* Simple Container */
+.app-container {
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f5f4ff, #faf9fe, #fef5fb);
+}
+
+/* Simple Button Styles */
+.btn {
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  background: white;
+  color: #333;
+  text-decoration: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: inline-block;
+  transition: all 0.2s ease;
+}
+
+.btn:hover {
+  background: #f0f0f0;
+  border-color: #999;
+}
+
+.btn-primary {
+  background: #6366f1;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 6px rgba(99, 102, 241, 0.2);
+}
+
+.btn-primary:hover {
+  background: #4f46e5;
+  box-shadow: 0 6px 8px rgba(99, 102, 241, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: #ef4444;
+  color: white;
+  border: none;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.2);
+}
+
+.btn-secondary:hover {
+  background: #dc2626;
+  box-shadow: 0 4px 6px rgba(239, 68, 68, 0.3);
+  transform: translateY(-2px);
+}
+
+.btn-danger {
+  background: #dc3545;
+  color: white;
+  border-color: #dc3545;
+}
+
+.btn-danger:hover {
+  background: #c82333;
+  border-color: #c82333;
+}
+
+/* Simple Form Styles */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.form-control.error {
+  border-color: #dc3545;
+}
+
+.form-error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+/* Simple Card Styles */
+.card {
+  background: white;
+  border: 2px solid #e9d5ff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 6px rgba(99, 102, 241, 0.1);
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  border-color: #a78bfa;
+  box-shadow: 0 8px 12px rgba(99, 102, 241, 0.15);
+  transform: translateY(-2px);
+}
+
+.card-header {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 8px;
+  margin-bottom: 16px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Simple Grid */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -8px;
+}
+
+.col {
+  flex: 1;
+  padding: 0 8px;
+}
+
+.col-6 {
+  flex: 0 0 50%;
+  padding: 0 8px;
+}
+
+.col-4 {
+  flex: 0 0 33.333%;
+  padding: 0 8px;
+}
+
+.col-3 {
+  flex: 0 0 25%;
+  padding: 0 8px;
+}
+
+/* Simple Navigation */
+.navbar {
+  background: white;
+  border-bottom: 2px solid #e9d5ff;
+  padding: 12px 0;
+  box-shadow: 0 2px 4px rgba(99, 102, 241, 0.1);
+}
+
+.navbar-brand {
+  font-size: 20px;
+  font-weight: 600;
+  color: #333;
+  text-decoration: none;
+}
+
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  margin-right: 16px;
+}
+
+.nav-link {
+  color: #333;
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.nav-link:hover {
+  background: linear-gradient(to right, #f5f3ff, #fce7f3);
+  color: #6366f1;
+}
+
+/* Simple Table */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid #ddd;
+}
+
+.table th,
+.table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.table th {
+  background: #f8f9fa;
+  font-weight: 600;
+}
+
+.table tr:hover {
+  background: #f8f9fa;
+}
+
+/* Simple Alert */
+.alert {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.alert-success {
+  background: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.alert-danger {
+  background: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.alert-info {
+  background: #d1ecf1;
+  color: #0c5460;
+  border: 1px solid #bee5eb;
+}
+
+/* Simple Loading */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.spinner {
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid #007bff;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Simple Badge */
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  background: #6c757d;
+  color: white;
+}
+
+.badge-primary {
+  background: #007bff;
+}
+
+.badge-success {
+  background: #28a745;
+}
+
+.badge-warning {
+  background: #ffc107;
+  color: #333;
+}
+
+.badge-danger {
+  background: #dc3545;
+}
+
+/* Simple Utilities */
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-muted {
+  color: #6c757d;
+}
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: 8px; }
+.mb-2 { margin-bottom: 16px; }
+.mb-3 { margin-bottom: 24px; }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: 8px; }
+.mt-2 { margin-top: 16px; }
+.mt-3 { margin-top: 24px; }
+
+.p-0 { padding: 0; }
+.p-1 { padding: 8px; }
+.p-2 { padding: 16px; }
+.p-3 { padding: 24px; }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .col-6,
+  .col-4,
+  .col-3 {
+    flex: 0 0 100%;
+  }
+  
+  .row {
+    margin: 0;
+  }
+  
+  .col,
+  .col-6,
+  .col-4,
+  .col-3 {
+    padding: 0;
+    margin-bottom: 16px;
+  }
+}
+
+/* Modern Toast Styles */
+#toast-container,
+.toast-container {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 99999 !important;
+  width: 450px;
+  max-width: 95vw;
+}
+
+/* Toast Container */
+.toast-modern {
+  position: relative;
+  padding: 16px 50px 16px 20px;
+  margin-bottom: 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: visible;
+  transition: all 0.3s ease;
+  animation: slideInRight 0.4s ease;
+  cursor: default;
+}
+
+.toast-modern:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(400px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Left Accent Bar */
+.toast-modern::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.toast-modern-success::before {
+  background: #10b981;
+}
+
+.toast-modern-error::before {
+  background: #ef4444;
+}
+
+.toast-modern-warning::before {
+  background: #f59e0b;
+}
+
+.toast-modern-info::before {
+  background: #3b82f6;
+}
+
+/* Title */
+.toast-modern-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 6px;
+  display: block;
+}
+
+/* Message */
+.toast-modern-message {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.5;
+  display: block;
+}
+
+/* Close Button */
+.toast-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 20px;
+  font-weight: 400;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+  z-index: 1000;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast-close-button:hover {
+  color: #111827;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.toast-close-button:active {
+  transform: scale(0.9);
+}
+
+/* Progress Bar */
+.toast-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  animation: progressAnimation linear;
+}
+
+.toast-modern-success .toast-progress-bar {
+  background: #10b981;
+}
+
+.toast-modern-error .toast-progress-bar {
+  background: #ef4444;
+}
+
+.toast-modern-warning .toast-progress-bar {
+  background: #f59e0b;
+}
+
+.toast-modern-info .toast-progress-bar {
+  background: #3b82f6;
+}
+
+@keyframes progressAnimation {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  #toast-container,
+  .toast-container {
+    width: calc(100vw - 32px);
+    max-width: calc(100vw - 32px);
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+
+  .toast-modern {
+    padding: 14px 50px 14px 16px;
+  }
+
+  .toast-modern-title {
+    font-size: 15px;
+  }
+
+  .toast-modern-message {
+    font-size: 13px;
+  }
+
+  .toast-close-button {
+    width: 22px;
+    height: 22px;
+    font-size: 18px;
+  }
+}
+
+/* Ensure close button is always clickable */
+button.toast-close-button,
+[aria-label="Close"],
+[class*="toast-close"] {
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+/* Fix for ngx-toastr close button */
+.toast-container button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.toast-container button:hover {
+  opacity: 0.8;
+}
+
+/* Icon wrapper for close button */
+.toast-close-button svg,
+.toast-close-button span,
+.toast-close-button::before,
+.toast-close-button::after {
+  display: block;
+  pointer-events: none;
+}
+
+/* Additional toastr close button fix */
+#toast-container .toast-close-button,
+.toast-container .toast-close-button {
+  position: absolute !important;
+  top: 8px !important;
+  right: 10px !important;
+  width: 28px !important;
+  height: 28px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #6b7280 !important;
+  font-size: 18px !important;
+  font-weight: 400 !important;
+  cursor: pointer !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+  z-index: 1001 !important;
+  pointer-events: auto !important;
+}
+
+#toast-container .toast-close-button:hover,
+.toast-container .toast-close-button:hover {
+  color: #111827 !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+  border-radius: 4px !important;
+}
+
+#toast-container .toast-close-button:active,
+.toast-container .toast-close-button:active {
+  transform: scale(0.9) !important;
+}

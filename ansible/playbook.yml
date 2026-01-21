@@ -1,0 +1,89 @@
+---
+- name: Deploy SkillHub Application
+  hosts: all
+  become: yes
+  vars:
+    project_dir: /opt/skillhub
+
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install required packages
+      apt:
+        name:
+          - curl
+          - git
+          - docker.io
+          - docker-compose-v2
+        state: present
+
+    - name: Ensure docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Add user to docker group
+      user:
+        name: ubuntu
+        groups: docker
+        append: yes
+
+    - name: Create project directory
+      file:
+        path: "{{ project_dir }}"
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+
+    - name: Create subdirectories for configs
+      file:
+        path: "{{ project_dir }}/{{ item }}"
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+        mode: '0755'
+      loop:
+        - grafana/provisioning
+        - prometheus
+
+    - name: Copy docker-compose.yml
+      copy:
+        src: ../docker-compose.yml
+        dest: "{{ project_dir }}/docker-compose.yml"
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+
+    - name: Copy prometheus config
+      copy:
+        src: ../prometheus/
+        dest: "{{ project_dir }}/prometheus/"
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+      # Assuming local directory exists; might need ignore_errors if not fully populated yet
+      ignore_errors: yes
+
+    - name: Copy grafana config
+      copy:
+        src: ../grafana/
+        dest: "{{ project_dir }}/grafana/"
+        owner: ubuntu
+        group: ubuntu
+        mode: '0644'
+      ignore_errors: yes
+
+    - name: Pull Docker images
+      command: docker compose pull
+      args:
+        chdir: "{{ project_dir }}"
+
+    - name: Start Application Stack
+      command: docker compose up -d
+      args:
+        chdir: "{{ project_dir }}"

@@ -1,0 +1,47 @@
+<div class="certificate-container">
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading certificate...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="certificate && !loading && !error" class="certificate-preview">
+    <div class="certificate-card">
+      <div class="certificate-header">
+        <div class="logo">🎓</div>
+        <h1>CERTIFICATE OF COMPLETION</h1>
+        <div class="decoration"></div>
+      </div>
+
+      <div class="certificate-body">
+        <p class="certificate-text">This is to certify that</p>
+        <h2 class="student-name">{{ certificate.studentName }}</h2>
+        <p class="certificate-text">has successfully completed</p>
+        <h3 class="course-name">{{ certificate.courseTitle }}</h3>
+        <p class="completion">with {{ certificate.completionPercentage.toFixed(1) }}% completion</p>
+      </div>
+
+      <div class="certificate-footer">
+        <div class="issue-date">
+          <p>Issued on: {{ certificate.issuedDate | date }}</p>
+        </div>
+        <div class="certificate-number">
+          <p>Certificate ID: {{ certificate.certificateNumber }}</p>
+        </div>
+      </div>
+
+      <div class="certificate-actions">
+        <button class="btn btn-primary" (click)="downloadCertificate()">
+          Download Certificate
+        </button>
+        <button class="btn btn-secondary" (click)="printCertificate()">
+          Print Certificate
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

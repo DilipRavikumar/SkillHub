@@ -1,0 +1,218 @@
+<div class="courses-container">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-background">
+      <div class="hero-pattern"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+          <path d="M2 17L12 22L22 17"/>
+          <path d="M2 12L12 17L22 12"/>
+        </svg>
+        <span>Free Courses for Everyone</span>
+      </div>
+      <h1 class="hero-title">Start Learning Today</h1>
+      <p class="hero-subtitle">Master new skills with our comprehensive, expert-led online courses</p>
+      
+      <!-- Quick Stats -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">{{ courses.length }}+</div>
+          <div class="stat-label">Courses</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ totalStudents }}+</div>
+          <div class="stat-label">Students</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">{{ totalInstructors }}+</div>
+          <div class="stat-label">Instructors</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Enhanced Search Section -->
+    <div class="search-section-enhanced">
+      <div class="search-header">
+        <h2 class="search-title">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+          Find Your Perfect Course
+        </h2>
+        <p class="search-subtitle">Discover {{ courses.length }}+ courses across multiple categories</p>
+      </div>
+
+      <div class="search-mega-box">
+        <div class="search-box-wrapper">
+          <div class="search-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8"></circle>
+              <path d="m21 21-4.35-4.35"></path>
+            </svg>
+          </div>
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm"
+            (input)="filterCourses()"
+            class="search-input"
+            placeholder="Try 'Java', 'Web Development', 'React' or any course name...">
+          <button *ngIf="searchTerm" (click)="clearFilters()" class="clear-button">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Quick Filters -->
+        <div class="quick-filters">
+          <div class="quick-filter-label">Quick Filters:</div>
+          <div class="quick-filter-buttons">
+            <button 
+              (click)="selectedCategory = ''; filterCourses()" 
+              [class.active]="!selectedCategory"
+              class="quick-filter-btn">
+              All Courses
+            </button>
+            <button 
+              (click)="selectedCategory = 'Web Development'; filterCourses()" 
+              [class.active]="selectedCategory === 'Web Development'"
+              class="quick-filter-btn">
+              Web Dev
+            </button>
+            <button 
+              (click)="selectedCategory = 'Mobile Development'; filterCourses()" 
+              [class.active]="selectedCategory === 'Mobile Development'"
+              class="quick-filter-btn">
+              Mobile Dev
+            </button>
+            <button 
+              (click)="selectedCategory = 'Data Science'; filterCourses()" 
+              [class.active]="selectedCategory === 'Data Science'"
+              class="quick-filter-btn">
+              Data Science
+            </button>
+            <button 
+              (click)="selectedCategory = 'Design'; filterCourses()" 
+              [class.active]="selectedCategory === 'Design'"
+              class="quick-filter-btn">
+              Design
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Filters -->
+      <div class="advanced-filters">
+        <div class="filter-group">
+          <label class="filter-label-text">Sort by:</label>
+          <select [(ngModel)]="sortBy" (change)="sortCourses(sortBy)" class="filter-select">
+            <option value="newest">Newest First</option>
+            <option value="popular">Most Popular</option>
+          </select>
+        </div>
+
+        <div class="view-toggle-wrapper">
+          <label class="filter-label-text">View:</label>
+          <div class="view-toggle">
+            <button 
+              [class.active]="viewMode === 'grid'" 
+              (click)="setViewMode('grid')"
+              class="view-btn"
+              aria-label="Grid view">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </button>
+            <button 
+              [class.active]="viewMode === 'list'" 
+              (click)="setViewMode('list')"
+              class="view-btn"
+              aria-label="List view">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="8" y1="6" x2="21" y2="6"></line>
+                <line x1="8" y1="12" x2="21" y2="12"></line>
+                <line x1="8" y1="18" x2="21" y2="18"></line>
+                <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                <line x1="3" y1="18" x2="3.01" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="hasActiveFilters()" class="active-filters">
+        <span class="filter-label">Active filters:</span>
+        <span *ngIf="searchTerm" class="filter-badge">
+          Search: "{{ searchTerm }}"
+          <button (click)="searchTerm = ''; filterCourses()" class="remove-filter">×</button>
+        </span>
+        <span *ngIf="selectedCategory" class="filter-badge">
+          {{ selectedCategory }}
+          <button (click)="selectedCategory = ''; filterCourses()" class="remove-filter">×</button>
+        </span>
+        <button (click)="clearFilters()" class="clear-all-btn">Clear all</button>
+      </div>
+    </div>
+
+    <!-- Results Section -->
+    <div class="results-section">
+      <div class="results-header">
+        <h2>{{ filteredCourses.length }} {{ filteredCourses.length === 1 ? 'Course' : 'Courses' }} Found</h2>
+        <span class="results-count">{{ courses.length }} total courses</span>
+      </div>
+      
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="loading-container">
+        <div class="spinner-large"></div>
+        <p>Loading courses...</p>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="!isLoading && filteredCourses.length === 0" class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h3>No courses found</h3>
+        <p>Try adjusting your search or filters to find what you're looking for.</p>
+        <button (click)="clearFilters()" class="btn-primary">Clear all filters</button>
+      </div>
+
+      <!-- Courses Grid/List -->
+      <div *ngIf="!isLoading && filteredCourses.length > 0" [class.grid-view]="viewMode === 'grid'" [class.list-view]="viewMode === 'list'" class="courses-grid">
+        <app-course-card 
+          *ngFor="let course of filteredCourses; trackBy: trackByCourseId" 
+          [course]="course" 
+          [viewMode]="viewMode"
+          (view)="onViewCourse($event)">
+        </app-course-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-gradient-to-b from-gray-50 to-white border-t border-gray-200 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h3 class="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+          SkillHub
+        </h3>
+        <p class="text-gray-600 mb-6 max-w-2xl mx-auto">
+          Empowering learners worldwide with expert-led online courses. Build skills that shape your future.
+        </p>
+      </div>
+      
+      <div class="border-t border-gray-200 pt-8 text-center">
+        <p class="text-gray-600 text-sm">&copy; 2025 SkillHub. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</div>

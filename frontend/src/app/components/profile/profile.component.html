@@ -1,0 +1,124 @@
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="header-content">
+      <div class="profile-avatar">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+        </svg>
+      </div>
+      <div class="profile-info">
+        <h1 class="profile-title">{{ isEditing ? 'Edit Profile' : currentUser?.name }}</h1>
+        <p class="profile-subtitle">{{ !isEditing ? currentUser?.email : 'Update your information' }}</p>
+        <div class="profile-badges">
+          <span class="role-badge" [class]="'role-' + currentUser?.role?.toLowerCase()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+            </svg>
+            {{ currentUser?.role }}
+          </span>
+          <span class="role-info">(Permanent)</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-actions" *ngIf="!isEditing">
+      <button class="action-btn secondary" (click)="toggleEdit()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 17.25V21H6.75L17.81 9.94L14.06 6.19L3 17.25ZM20.71 7.04C21.1 6.65 21.1 6.02 20.71 5.63L18.37 3.29C17.98 2.9 17.35 2.9 16.96 3.29L15.13 5.12L18.88 8.87L20.71 7.04Z" fill="currentColor"/>
+        </svg>
+        Edit Profile
+      </button>
+    </div>
+  </div>
+
+  <div class="profile-content">
+    <!-- Edit Mode -->
+    <div class="profile-info-section" *ngIf="isEditing">
+      <div class="section-header">
+        <h2>Edit Profile Information</h2>
+      </div>
+      
+      <form class="profile-edit-form" (ngSubmit)="saveProfile()">
+        <div class="form-group">
+          <label>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+            </svg>
+            Full Name
+          </label>
+          <input type="text" [(ngModel)]="editForm.name" [ngModelOptions]="{standalone: true}" required>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
+            </svg>
+            Email
+          </label>
+          <input type="email" [(ngModel)]="editForm.email" [ngModelOptions]="{standalone: true}" required>
+        </div>
+
+
+        <div class="form-actions">
+          <button type="button" class="btn-secondary" (click)="cancelEdit()">Cancel</button>
+          <button type="submit" class="btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- View Mode -->
+    <div class="profile-info-section" *ngIf="!isEditing">
+      <div class="section-header">
+        <h2>Profile Information</h2>
+      </div>
+      
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" fill="currentColor"/>
+            </svg>
+            Name
+          </div>
+          <div class="info-value">{{ currentUser?.name }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4H4C2.9 4 2.01 4.9 2.01 6L2 18C2 19.1 2.9 20 4 20H20C21.1 20 22 19.1 22 18V6C22 4.9 21.1 4 20 4ZM20 8L12 13L4 8V6L12 11L20 6V8Z" fill="currentColor"/>
+            </svg>
+            Email
+          </div>
+          <div class="info-value">{{ currentUser?.email }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L13.09 8.26L22 9L13.09 9.74L12 16L10.91 9.74L2 9L10.91 8.26L12 2Z" fill="currentColor"/>
+            </svg>
+            Role
+          </div>
+          <div class="info-value">
+            <span class="role-badge" [class]="'role-' + currentUser?.role?.toLowerCase()">
+              {{ currentUser?.role }}
+            </span>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22S22 17.52 22 12S17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z" fill="currentColor"/>
+            </svg>
+            Quick Actions
+          </div>
+          <div class="info-value">
+            <button class="btn-link" routerLink="/dashboard">View Dashboard</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

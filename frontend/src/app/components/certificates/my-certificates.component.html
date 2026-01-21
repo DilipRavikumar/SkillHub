@@ -1,0 +1,56 @@
+<div class="certificates-container">
+  <div class="header">
+    <h1>My Certificates</h1>
+    <p>View and download your course completion certificates</p>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Loading certificates...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="!loading && !error && certificates.length === 0" class="empty-state">
+    <div class="empty-icon">🎓</div>
+    <h2>No Certificates Yet</h2>
+    <p>Complete a course to earn your first certificate!</p>
+    <a routerLink="/courses" class="btn btn-primary">Browse Courses</a>
+  </div>
+
+  <div *ngIf="!loading && !error && certificates.length > 0" class="certificates-grid">
+    <div *ngFor="let certificate of certificates" class="certificate-card">
+      <div class="certificate-header">
+        <div class="icon">🏆</div>
+        <div class="certificate-info">
+          <h3>{{ certificate.courseTitle }}</h3>
+          <p class="issued-date">Issued: {{ formatDate(certificate.issuedDate) }}</p>
+        </div>
+      </div>
+
+      <div class="certificate-body">
+        <div class="completion-info">
+          <span class="label">Completion:</span>
+          <span class="percentage">{{ certificate.completionPercentage.toFixed(1) }}%</span>
+        </div>
+        <div class="certificate-id">
+          <span class="label">Certificate ID:</span>
+          <span class="id-value">{{ certificate.certificateNumber }}</span>
+        </div>
+      </div>
+
+      <div class="certificate-actions">
+        <button class="btn btn-primary" (click)="viewCertificate(certificate.id)">
+          View Certificate
+        </button>
+        <button class="btn btn-secondary" (click)="downloadCertificate(certificate.id)">
+          Download
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
