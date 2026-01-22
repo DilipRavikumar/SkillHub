@@ -77,7 +77,7 @@ resource "aws_security_group" "skillhub_sg" {
 
 # --- EC2 Instance ---
 resource "aws_instance" "skillhub_server" {
-  ami           = "ami-0c7217cdde317cfec" # Ubuntu 22.04 LTS (us-east-1)
+  ami           = data.aws_ami.ubuntu.id
   instance_type = var.instance_type
   
   # IAM Instance Profile for SSM access
