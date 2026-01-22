@@ -55,7 +55,7 @@ pipeline {
                         
                         sh """
                             echo '[webservers]' > inventory
-                            echo '${instanceId} ansible_connection=aws_ssm ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python3' >> inventory
+                            echo '${instanceId} ansible_connection=aws_ssm ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python3 ansible_aws_ssm_region=us-east-2' >> inventory
                         """
                         
                         echo 'Waiting for SSM Agent to register...'
