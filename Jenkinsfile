@@ -58,6 +58,9 @@ pipeline {
                             echo '${instanceId} ansible_connection=aws_ssm ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python3' >> inventory
                         """
                         
+                        echo 'Waiting for SSM Agent to register...'
+                        sleep 60
+                        
                         sh 'ansible-playbook playbook.yml'
                     }
                 }
