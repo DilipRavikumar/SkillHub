@@ -8,10 +8,10 @@ pipeline {
 
     environment {
         AWS_DEFAULT_REGION = 'us-east-2'
-        // Bind AWS credentials from Jenkins Global Credentials
-        AWS_ACCESS_KEY_ID     = credentials('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
-        AWS_SESSION_TOKEN     = credentials('AWS_SESSION_TOKEN')
+        // Bind AWS credentials from Jenkins Global Credentials using their specific IDs
+        AWS_ACCESS_KEY_ID     = credentials('53f628bd-0c3d-45bc-ad0b-ac2732f0a5a6')
+        AWS_SECRET_ACCESS_KEY = credentials('cb0b56e2-a76d-4c52-8b7f-ba4ce4943088')
+        AWS_SESSION_TOKEN     = credentials('0def5a3a-6316-4772-ab92-5d68ada2b389')
     }
 
     stages {
